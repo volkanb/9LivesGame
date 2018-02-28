@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -61,8 +62,21 @@ public class Cat : MonoBehaviour {
 	
 	}
 
+    void Update()
+    {
+        if(freakoutManager.m_fillAmount == 1)
+        {
+            freakoutManager.ready = true;
+        }
+        else
+        {
+            freakoutManager.ready = false;
+        }
 
-	protected void MoveRight(){
+        freakoutManager.UpdateFillAmount();
+    }
+
+    protected void MoveRight(){
 
 		animator.SetBool("walking",true);
 		animator.SetBool("idle",false);
@@ -160,6 +174,14 @@ public class Cat : MonoBehaviour {
 			isDying = true;
 			Destroy(gameObject);
 		}
+
+        // Increases the fill for the freakout bar
+        if(other.gameObject.tag == "FOBPickUp")
+        {
+            // TODO:: if (other.name == "BigFill"){ freakoutManager.percentage *= 5;} // Add this when we want to make the pickup worth more percentage or less percentage.
+            Destroy(other.gameObject);
+            freakoutManager.IncreaseFBBar();
+        }
 	}
 
 	protected void ReturnToHub(){
