@@ -57,24 +57,12 @@ public class Cat : MonoBehaviour {
 
 	public FreakoutManager freakoutManager;
 
-	// Use this for initialization
-	void Start () {
+    public bool ready;                                          // Checks if the freak out bar is ready.
+
+    // Use this for initialization
+    void Start () {
 	
 	}
-
-    void Update()
-    {
-        if(freakoutManager.m_fillAmount == 1)
-        {
-            freakoutManager.ready = true;
-        }
-        else
-        {
-            freakoutManager.ready = false;
-        }
-
-        freakoutManager.UpdateFillAmount();
-    }
 
     protected void MoveRight(){
 

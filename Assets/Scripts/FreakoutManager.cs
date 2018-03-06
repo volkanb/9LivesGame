@@ -1,4 +1,4 @@
-﻿tousing UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,15 +15,28 @@ public class FreakoutManager : MonoBehaviour {
     public GameObject m_FBFiller;                                       // Placeholder for the filler in the level.
     public GameObject m_FBIcon;                                         // Placeholder for the icon in the level.
     public float m_percentage = 0.1f;                                   // The percentage of how much the bar will increase by.
-    public bool ready = false;                                          // Checks if the freak out bar is ready.
     public float m_fillAmount = 0;                                          // 0 = empty, 1 = full.
 
     void Start(){
 		mySpriteRenderer = GetComponent<SpriteRenderer>();
 		myAnimator = GetComponent<Animator>();
+        cat = GameObject.FindGameObjectWithTag("Player").GetComponent<Cat>();
         m_FBFiller = GameObject.Find("FOB Filler");                     // Assigns the Filler to m_FBFiller.
         m_FBIcon = GameObject.Find("FOB Icon");                         // Assigns the Icon to m_FBicon.
         m_FBFiller.GetComponent<Image>().fillAmount = m_fillAmount;     // Grabs the current fill amount.
+    }
+
+    void Update()
+    {
+        UpdateFillAmount();
+        if (m_fillAmount >= 1)
+        {
+            cat.ready = true;
+        }
+        else if(m_fillAmount != 1)
+        {
+            cat.ready = false;
+        }
     }
 
     public void StartFreakout(Cat cat){

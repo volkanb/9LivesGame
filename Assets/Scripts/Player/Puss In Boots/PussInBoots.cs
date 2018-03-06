@@ -22,9 +22,9 @@ public class PussInBoots : Cat {
 	public bool startedParryStance;
 	public bool parryStanceActivated;
 	public bool isParrying;
-    public bool isClimbing;//Nick
+	public bool isClimbing;//Nick
 
-    public Enemy enemyBeingParried;
+	public Enemy enemyBeingParried;
 
 	void Awake(){
 		rightAttackingPoint.enabled = false;
@@ -40,38 +40,39 @@ public class PussInBoots : Cat {
 		myRigidBody2D = GetComponent<Rigidbody2D>();
 		myRigidBody2D.velocity = new Vector2(myRigidBody2D.velocity.x,0);
 	}
-    //Nick
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Climbable")
-        {
-            //Debug.Log("This worked. "+ isClimbing);
-            isClimbing = true;
-            gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
-            myRigidBody2D.velocity = new Vector3(0, 0, 0);
-            
-        }
-    }
-    //Nick
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Climbable")
-        {
-            //Debug.Log("This worked. " + isClimbing);
-            isClimbing = false;
-            gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
-            isJumping = false;
-        }
-    }
 
-    // Update is called once per frame
-    void Update () {
+	//Nick
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.gameObject.tag == "Climbable")
+		{
+			//Debug.Log("This worked. "+ isClimbing);
+			isClimbing = true;
+			gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+			myRigidBody2D.velocity = new Vector3(0, 0, 0);
+
+		}
+	}
+	//Nick
+	void OnTriggerExit2D(Collider2D other)
+	{
+		if (other.gameObject.tag == "Climbable")
+		{
+			//Debug.Log("This worked. " + isClimbing);
+			isClimbing = false;
+			gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
+			isJumping = false;
+		}
+	}
+
+	// Update is called once per frame
+	void Update () {
 
 		if(Input.GetButtonDown(returnToHubGamepadButton) || Input.GetKeyDown(returnToHubKey)){
 			ReturnToHub();
 		}
 
-		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isWalking && !isJumping && !isAttacking && !isParrying && !startedParryStance && !parryStanceActivated){
+		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isWalking && !isJumping && !isAttacking && !isParrying && !startedParryStance && !parryStanceActivated && ready){
 			freakoutMode = true;
 			animator.SetBool("freakout",true);
 		}
@@ -87,22 +88,25 @@ public class PussInBoots : Cat {
 				} else {
 					Idle();
 				}
-                //Nick
-                if (isClimbing)
-                {
-                    if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0 || (Input.GetAxis("Vertical") >= 0.5f))
-                    {
-                        myRigidBody2D.transform.position += Vector3.up * 2 * Time.deltaTime;
-                    }
 
-                    if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0 || (Input.GetAxis("Vertical") <= -0.5f))
-                    {
-                        myRigidBody2D.transform.position += -Vector3.up * 2 * Time.deltaTime;
-                        Debug.Log(Input.GetAxis("Vertical"));
-                    }
-                }
+				//Nick
+				if (isClimbing)
+				{
+					if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0 || (Input.GetAxis("Vertical") >= 0.5f))
+					{
+						myRigidBody2D.transform.position += Vector3.up * 2 * Time.deltaTime;
+					}
 
-                if (Input.GetKeyDown (jumpKey) || Input.GetButtonDown(jumpGamepadButton)){
+					if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0 || (Input.GetAxis("Vertical") <= -0.5f))
+					{
+						myRigidBody2D.transform.position += -Vector3.up * 2 * Time.deltaTime;
+						Debug.Log(Input.GetAxis("Vertical"));
+					}
+				}
+
+
+
+				if(Input.GetKeyDown (jumpKey) || Input.GetButtonDown(jumpGamepadButton)){
 
 					if(!isFalling){
 
