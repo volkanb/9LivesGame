@@ -11,6 +11,8 @@ public class PussInBoots : Cat {
 
 	public float parryingTime;
 
+    public int climbSpeed = 2;
+
 	public string parryGamepadButton;
 	public string attackGamepadButton;
 	public string returnToHubGamepadButton;
@@ -48,10 +50,14 @@ public class PussInBoots : Cat {
 		{
 			//Debug.Log("This worked. "+ isClimbing);
 			isClimbing = true;
+            isFalling = false;
+            isJumping = true;
 			gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
 			myRigidBody2D.velocity = new Vector3(0, 0, 0);
-
-		}
+            animator.SetBool("walking", false);
+            animator.SetBool("idle", false);
+            animator.SetBool("climbing", true);
+        }
 	}
 	//Nick
 	void OnTriggerExit2D(Collider2D other)
@@ -60,9 +66,10 @@ public class PussInBoots : Cat {
 		{
 			//Debug.Log("This worked. " + isClimbing);
 			isClimbing = false;
-			gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
-			isJumping = false;
-		}
+            isJumping = false;
+            gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
+            animator.SetBool("climbing", false);
+        }
 	}
 
 	// Update is called once per frame
@@ -92,16 +99,31 @@ public class PussInBoots : Cat {
 				//Nick
 				if (isClimbing)
 				{
+                    if(Input.GetButton("Vertical") || Input.GetAxisRaw("Vertical") > 0 || (Input.GetAxis("Vertical") >= 0.5f ||
+                        Input.GetButton("Vertical") || Input.GetAxisRaw("Vertical") < 0 || (Input.GetAxis("Vertical") <= -0.5f ||
+                        Input.GetKey(moveRightKey) || (Input.GetAxis(moveHorizontalGamepadAxis) >= 0.5f || 
+                        Input.GetKey(moveLeftKey) || (Input.GetAxis(moveHorizontalGamepadAxis) <= -0.5f)))))
+                    {
+                        animator.speed = 1;
+                    }
+                    else
+                    {
+                        animator.speed = 0;
+                    }
+                    //This is conjested and ugly like crazy but it's all to get the climbing animation to stop while he's not moving
+                    
+
 					if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0 || (Input.GetAxis("Vertical") >= 0.5f))
 					{
-						myRigidBody2D.transform.position += Vector3.up * 2 * Time.deltaTime;
-					}
+						myRigidBody2D.transform.position += Vector3.up * climbSpeed * Time.deltaTime;
+                        //animator.speed = 1;
+                    }
 
 					if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0 || (Input.GetAxis("Vertical") <= -0.5f))
 					{
-						myRigidBody2D.transform.position += -Vector3.up * 2 * Time.deltaTime;
-						Debug.Log(Input.GetAxis("Vertical"));
-					}
+						myRigidBody2D.transform.position += -Vector3.up * climbSpeed * Time.deltaTime;
+                        //animator.speed = 1;
+                    }
 				}
 
 
