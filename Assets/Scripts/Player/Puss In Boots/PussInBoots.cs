@@ -138,11 +138,12 @@ public class PussInBoots : Cat {
 					}
 				}
 
-				if(Input.GetKeyDown (attackKey) || Input.GetButtonDown(attackGamepadButton)){
+				if((Input.GetKeyDown (attackKey) || Input.GetButtonDown(attackGamepadButton)) && !isClimbing){
 					StartAttack();
 				}
 
-				if((Input.GetKeyDown(parryKey ) || Input.GetButtonDown(parryGamepadButton)) && !isJumping && !isFalling){
+				if((Input.GetKeyDown(parryKey ) || Input.GetButtonDown(parryGamepadButton)) && !isJumping && !isFalling && !isClimbing)
+                {
 					StartParryStance();
 				}
 			}
