@@ -48,15 +48,14 @@ public class PussInBoots : Cat {
 	{
 		if (other.gameObject.tag == "Climbable")
 		{
-			//Debug.Log("This worked. "+ isClimbing);
 			isClimbing = true;
             isFalling = false;
             isJumping = true;
 			gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
 			myRigidBody2D.velocity = new Vector3(0, 0, 0);
-            animator.SetBool("walking", false);
-            animator.SetBool("idle", false);
             animator.SetBool("climbing", true);
+            animator.SetBool("walking", false);
+            animator.SetBool("idle", false);       
         }
 	}
 	//Nick
@@ -64,7 +63,6 @@ public class PussInBoots : Cat {
 	{
 		if (other.gameObject.tag == "Climbable")
 		{
-			//Debug.Log("This worked. " + isClimbing);
 			isClimbing = false;
             isJumping = false;
             gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
@@ -99,8 +97,8 @@ public class PussInBoots : Cat {
 				//Nick
 				if (isClimbing)
 				{
-                    if(Input.GetButton("Vertical") || Input.GetAxisRaw("Vertical") > 0 || (Input.GetAxis("Vertical") >= 0.5f ||
-                        Input.GetButton("Vertical") || Input.GetAxisRaw("Vertical") < 0 || (Input.GetAxis("Vertical") <= -0.5f ||
+                    if(Input.GetButton("Vertical") || Input.GetAxisRaw("Vertical") > 0.5f || (Input.GetAxis("Vertical") >= 0.5f ||
+                        Input.GetButton("Vertical") || Input.GetAxisRaw("Vertical") < -0.5f || (Input.GetAxis("Vertical") <= -0.5f ||
                         Input.GetKey(moveRightKey) || (Input.GetAxis(moveHorizontalGamepadAxis) >= 0.5f || 
                         Input.GetKey(moveLeftKey) || (Input.GetAxis(moveHorizontalGamepadAxis) <= -0.5f)))))
                     {
@@ -116,13 +114,11 @@ public class PussInBoots : Cat {
 					if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0 || (Input.GetAxis("Vertical") >= 0.5f))
 					{
 						myRigidBody2D.transform.position += Vector3.up * climbSpeed * Time.deltaTime;
-                        //animator.speed = 1;
                     }
 
 					if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0 || (Input.GetAxis("Vertical") <= -0.5f))
 					{
 						myRigidBody2D.transform.position += -Vector3.up * climbSpeed * Time.deltaTime;
-                        //animator.speed = 1;
                     }
 				}
 
