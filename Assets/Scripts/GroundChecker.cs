@@ -17,8 +17,8 @@ public class GroundChecker : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 
-		if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform"){
+		//if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform"){
 			player.IsGrounded();
-		}
+		//}
 	}
 }

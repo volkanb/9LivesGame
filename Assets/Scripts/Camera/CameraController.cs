@@ -18,8 +18,9 @@ public class CameraController : MonoBehaviour {
 	public float xTolerance = 0.3f; //Tolerance in x direction
 
 	private bool movingRight = true; //Whether the player is on the way right
-		
-	public GameObject bottomBorder; //Border the player can't come bellow
+
+    public GameObject topBorder;
+    public GameObject bottomBorder; //Border the player can't come bellow
 	public GameObject leftBorder; //Border the player can't cross if he is moving right
 	public GameObject leftTolerance; //Only if the player crosses this border he is viewed as moving left
 	public GameObject rightBorder; //Border the player can't cross if he is moving left
@@ -66,10 +67,17 @@ public class CameraController : MonoBehaviour {
 		if (player.transform.position.y < bottomBorder.transform.position.y) {
 			moveTo = new Vector3 (moveTo.x, player.transform.position.y + yOffset, moveTo.z);
 			transform.position = new Vector3 (transform.position.x, moveTo.y, transform.position.z);
-		} 
-		
-		//If the player is standing on ground, set the target vector
-		if (!player.isJumping) {
+		}
+
+        //If the player is above the top border move instantly to him in y direction 
+        if (player.transform.position.y > topBorder.transform.position.y)
+        {
+            moveTo = new Vector3(moveTo.x, player.transform.position.y + yOffset, moveTo.z);
+            transform.position = new Vector3(transform.position.x, moveTo.y, transform.position.z);
+        }
+
+        //If the player is standing on ground, set the target vector
+        if (!player.isJumping) {
 			if (player.transform.position.y - (moveTo.y - yOffset) > yTolerance) 
 				moveTo = new Vector3 (moveTo.x, player.transform.position.y + yOffset, moveTo.z);
 		} 

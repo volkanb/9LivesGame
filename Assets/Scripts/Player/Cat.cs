@@ -29,7 +29,7 @@ public class Cat : MonoBehaviour {
 	public bool isDying;
 	public bool receivedDamage;
 	public bool invulnerable;
-	public bool freakoutMode;
+    public bool freakoutMode;
 
 
 	public KeyCode moveRightKey;
@@ -59,10 +59,17 @@ public class Cat : MonoBehaviour {
 
     public bool ready;                                          // Checks if the freak out bar is ready.
 
+    private LayerMask mask = 1<<8;
+
     // Use this for initialization
     void Start () {
 	
 	}
+
+    private void FixedUpdate()
+    {
+        //CheckSlope();
+    }
 
     protected void MoveRight(){
 
@@ -183,6 +190,34 @@ public class Cat : MonoBehaviour {
 	public void StopFreakout(){
 		animator.SetBool("freakout",false);
 	}
+
+    //WIP
+    void CheckSlope()
+    {
+        // Character is grounded, and no axis pressed: 
+        if (!isFalling && !isJumping)
+        {
+            
+            RaycastHit2D hit = Physics2D.Raycast(transform.position - new Vector3(0, 0.4f, 0), Vector2.down, 1, mask);
+            Debug.DrawRay(transform.position-new Vector3(0,0.4f,0), Vector2.down, Color.green);
+
+            // Check if we are on the slope
+            if (hit && Mathf.Abs(hit.normal.x) > Mathf.Epsilon)
+            {
+                Debug.Log("raycasted");
+                // We freeze all the rigidbody constraints and put velocity to 0
+                myRigidBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+                myRigidBody2D.velocity = Vector2.zero;
+            }
+        }
+        else
+        {
+
+            // if we are on air or moving - jumping, unfreeze all and freeze only rotation.
+            myRigidBody2D.constraints = RigidbodyConstraints2D.None;
+            myRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+    }
 
 }
 

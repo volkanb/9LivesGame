@@ -46,13 +46,25 @@ public class KnightDog : Enemy {
 
 				DefineDirectionToLook();
 
-				if(defenseRange < distanceToPlayer && distanceToPlayer <= walkingRange ){
-					Walk();
-				} else if(attackingRange < distanceToPlayer && distanceToPlayer <= defenseRange){
-					Defend();
-				} else if(distanceToPlayer <= attackingRange){
+                if (defenseRange < distanceToPlayer && distanceToPlayer <= walkingRange && !attacking)
+                {
+                    myAnimator.SetBool("attacking", false);
+                    Walk();
+                }
+                else if (attackingRange < distanceToPlayer && distanceToPlayer <= defenseRange)
+                {
+                    Defend();
+                }
+                else if (distanceToPlayer <= attackingRange && !attacking && !isWalking && isDefending == true)
+                {
 					StartAttacking();
-				} else{
+				}
+                else if (distanceToPlayer >= attackingRange)
+                {
+                    FinishAttacking();
+                }
+                else
+                {
 					Idle();
 				}
 
@@ -168,8 +180,9 @@ public class KnightDog : Enemy {
 		attacking = true;
 		myAnimator.SetBool("attacking",true);
 		myAnimator.SetBool("defending",false);
+        myAnimator.SetBool("walking", false);
 
-	}
+    }
 
 	public void ActivateAttackCollider(){
 
