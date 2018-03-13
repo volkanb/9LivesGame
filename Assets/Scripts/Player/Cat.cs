@@ -35,6 +35,7 @@ public class Cat : MonoBehaviour {
 	public KeyCode moveRightKey;
 	public KeyCode moveLeftKey;
 	public KeyCode jumpKey;
+    public KeyCode downKey;
 	public KeyCode transformInHubKey;
 	public KeyCode freakoutKey;
 
@@ -49,6 +50,7 @@ public class Cat : MonoBehaviour {
 	protected bool isWalking;
 	public bool isFalling;
 	protected bool isAttacking;
+    public bool isOnGround;
 
 	public bool finishedLevel;
 
@@ -96,8 +98,16 @@ public class Cat : MonoBehaviour {
 
 	
 	}
+    protected void MoveUp()
+    {
+        myRigidBody2D.transform.position += Vector3.up * speed * Time.deltaTime;
+    }
+    protected void MoveDown()
+    {
+        myRigidBody2D.transform.position += Vector3.down * speed * Time.deltaTime;
+    }
 
-	protected void Idle(){
+    protected void Idle(){
 
 		animator.SetBool("walking",false);
 		animator.SetBool("idle",true);
