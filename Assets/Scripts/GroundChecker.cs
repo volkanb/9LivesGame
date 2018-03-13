@@ -19,6 +19,14 @@ public class GroundChecker : MonoBehaviour {
 
 		if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform"){
 			player.IsGrounded();
+            player.isOnGround = true;
 		}
 	}
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform")
+        {
+            player.isOnGround = false;
+        }
+    }
 }

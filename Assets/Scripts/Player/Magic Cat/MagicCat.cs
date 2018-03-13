@@ -13,11 +13,15 @@ public class MagicCat : Cat {
 	public string magicPulseGamepadButton;
 	public string returnToHubGamepadButton;
 
+    public Vector3 tempPos;
 
 	public KeyCode shootKey;
 	public KeyCode magicPulseKey;
 	public KeyCode returnToHubKey;
 
+    public int levitateDelay = 3;
+    public bool levitate = false;
+    public float doubleJump = 0;
 
 	public float yVelocity;
 
@@ -60,25 +64,61 @@ public class MagicCat : Cat {
 
 			if(!isAttacking && !isPulsing){
 
-				if (Input.GetKey (moveRightKey) || (Input.GetAxis (moveHorizontalGamepadAxis) >= 0.5f)) {
-					MoveRight ();
-				} else if (Input.GetKey (moveLeftKey) || (Input.GetAxis (moveHorizontalGamepadAxis) <= -0.5f)) {
-					MoveLeft ();
-				} else {
-					Idle();
-				}
+                if (Input.GetKey(moveRightKey) || (Input.GetAxis(moveHorizontalGamepadAxis) >= 0.5f))
+                {
+                    MoveRight();
+                }
+                else if (Input.GetKey(moveLeftKey) || (Input.GetAxis(moveHorizontalGamepadAxis) <= -0.5f))
+                {
+                    MoveLeft();
+                }
+                else
+                {
+                    Idle();
+                }
+
+                if (Input.GetKey(jumpKey) && levitate || Input.GetAxis(moveVerticalGamepadAxis) >= 0.5f && levitate)
+                {
+                    MoveUp();
+                }
+
+                if (Input.GetKey(downKey) && levitate || Input.GetAxis(moveVerticalGamepadAxis) <= -0.5f && levitate)
+                {
+                    MoveDown();
+                }
 
 				if(Input.GetKeyDown (jumpKey) || Input.GetButtonDown(jumpGamepadButton)){
-
+                    animator.SetBool("jump", true);
 					if(!isFalling){
 
-						if(!isJumping){
-							Jump();
-						} 
+                        if (!isJumping)
+                        {
+                            
+                            Jump();
+                        }
+                        if(isJumping)
+                        {
+                            doubleJump++;
+                        }
 					}
 				}
 
-				if(Input.GetKeyDown (shootKey) || Input.GetButtonDown(shootMagicGamepadButton)){
+                if (!isOnGround && doubleJump > 0 && isJumping && Input.GetKeyDown(jumpKey) || !isOnGround && doubleJump > 0 && isJumping && Input.GetButtonDown(jumpGamepadButton))
+                {
+                    levitate = true;
+                }
+
+                if(isFalling)
+                {
+                    animator.SetBool("jump", false);
+                }
+                
+                if(isOnGround)
+                {
+                    doubleJump = 0;
+                }
+
+                if (Input.GetKeyDown (shootKey) || Input.GetButtonDown(shootMagicGamepadButton)){
 					StartProjectile();
 				}
 
@@ -113,6 +153,27 @@ public class MagicCat : Cat {
 			//animator.SetBool("dying",true);
 		}
 	}
+
+    private void FixedUpdate()
+    {
+        if (levitate)
+        {
+            animator.SetBool("levitate", true);
+            myRigidBody2D.bodyType = RigidbodyType2D.Kinematic;
+            myRigidBody2D.velocity = Vector2.zero;
+            StartCoroutine(LevitateOff());
+        }
+    }
+
+    
+
+    IEnumerator LevitateOff()
+    {
+        yield return new WaitForSeconds(levitateDelay);
+        levitate = false;
+        animator.SetBool("levitate", false);
+        myRigidBody2D.bodyType = RigidbodyType2D.Dynamic;
+    }
 
 
 //	void LateUpdate(){
