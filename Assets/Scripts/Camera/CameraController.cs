@@ -9,7 +9,8 @@ public class CameraController : MonoBehaviour {
 
 	public bool follow = true; //Whether the camera should follow the player
 	private Vector3 moveTo; //Target vector
-	private Cat player; 
+	private Cat player;
+    private PussInBoots sebby;
 	private Vector3 velocity = Vector3.zero;
 
 	public float speedX = 12f; //Speed of the camera
@@ -35,8 +36,9 @@ public class CameraController : MonoBehaviour {
 	void Start () {
 		//Find the player
 		player = FindObjectOfType<Cat>();
-		//Set the offsets
-		yOffset = - bottomBorder.transform.localPosition.y;
+        sebby = FindObjectOfType<PussInBoots>();
+        //Set the offsets
+        yOffset = - bottomBorder.transform.localPosition.y;
 		xOffset = leftBorder.transform.localPosition.x;
 
 		//Set camera to start position
@@ -70,18 +72,25 @@ public class CameraController : MonoBehaviour {
 		}
 
         //If the player is above the top border move instantly to him in y direction 
-        if (player.transform.position.y > topBorder.transform.position.y)
+        /*if (player.transform.position.y > topBorder.transform.position.y)
         {
             moveTo = new Vector3(moveTo.x, player.transform.position.y + yOffset, moveTo.z);
             transform.position = new Vector3(transform.position.x, moveTo.y, transform.position.z);
-        }
+        }*/
 
         //If the player is standing on ground, set the target vector
         if (!player.isJumping) {
 			if (player.transform.position.y - (moveTo.y - yOffset) > yTolerance) 
 				moveTo = new Vector3 (moveTo.x, player.transform.position.y + yOffset, moveTo.z);
-		} 
-	}
+		}
+
+        //If the player as Sebastian is climbing, set the target vector 
+        if (player.isJumping && sebby.isJumping)
+        {
+            if (player.transform.position.y - (moveTo.y - yOffset) > yTolerance)
+                moveTo = new Vector3(moveTo.x, player.transform.position.y + yOffset, moveTo.z);
+        }
+    }
 
 	private void UpdateXDirection(){
 
