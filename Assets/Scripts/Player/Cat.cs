@@ -186,7 +186,15 @@ public class Cat : MonoBehaviour {
             Destroy(other.gameObject);
             freakoutManager.IncreaseFBBar();
         }
-	}
+
+        // Increases the fill for the freakout bar
+        if (other.gameObject.tag == "HealthPickUp")
+        {
+            Destroy(other.gameObject);
+            Health health = gameObject.GetComponent<Health>();
+            health.heal = true;
+        }
+    }
 
 	protected void ReturnToHub(){
 		SceneManager.LoadScene(0);

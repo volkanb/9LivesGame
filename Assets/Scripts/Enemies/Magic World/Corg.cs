@@ -111,9 +111,11 @@ public class Corg : Enemy {
 		if(other.gameObject.tag == "Player"){
 
 			Cat playerVariables = other.gameObject.GetComponent<Cat>();
+            Health healthScript = other.gameObject.GetComponent<Health>();
 
 			if(!playerVariables.invulnerable){
 				playerVariables.life -= 1;
+                healthScript.damage = true;
 				playerVariables.receivedDamage = true;
 			} 
 		}
