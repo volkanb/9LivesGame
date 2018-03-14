@@ -20,12 +20,13 @@ public class Corg : Enemy {
 		mySpriteRenderer = GetComponent<SpriteRenderer>();
 		lookingRight = true;
 		freakoutManager = FindObjectOfType<FreakoutManager>();
+		myAnimator = GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if(!prepareForParry && !stunned){
+		if(!prepareForParry && !stunned && !dying){
 			if(movementIsHorizontal){
 				RoamX();
 			} else {
@@ -38,16 +39,7 @@ public class Corg : Enemy {
 		}
 
 		//Death
-		if (life <= 0 && !dying) {
-
-//			source.PlayOneShot (dieSound, 1.0f);
-//			animator.SetBool ("dead", true);
-			dying = true;
-//			Destroy (GetComponent<Rigidbody2D> ());
-//			Destroy (GetComponent<CircleCollider2D> ());
-			Destroy(transform.parent.gameObject);
-
-		}
+		CheckDeath();
 
 		//Toggle invulnerability off
 		if (invulnerableTimeStamp < Time.time) {
@@ -62,9 +54,7 @@ public class Corg : Enemy {
 		}
 
 		//Take Damage
-		if (receivedDamage && life > 0) {
-			ToggleInvinsibility ();
-		}
+		CheckDamageReceived();
 	}
 
 	//Moves between the 2 limits on the x axis
@@ -143,5 +133,35 @@ public class Corg : Enemy {
 
 	void OnBecameInvisible(){
 		freakoutManager.RemoveEnemie(transform.parent.gameObject);
+	}
+
+	protected void CheckDamageReceived()
+	{
+		if (receivedDamage && life > 0) {
+			myAnimator.SetBool("damage",true);
+			ToggleInvinsibility ();
+		}
+	}
+
+	protected void DamageAnimationFinished()
+	{
+		myAnimator.SetBool("damage",false);
+	}
+
+	protected void CheckDeath()
+	{
+		if (life <= 0 && !dying) {
+			myAnimator.SetBool("dying",true);
+			//			source.PlayOneShot (dieSound, 1.0f);
+			dying = true;
+			Destroy (GetComponent<Rigidbody2D> ());
+			Destroy (GetComponent<CircleCollider2D> ());
+
+		}
+	}
+
+	protected void DeathAnimationFinished()
+	{
+		Destroy(transform.parent.gameObject);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PussInBoots : Cat {
 
@@ -150,31 +151,15 @@ public class PussInBoots : Cat {
 			}
 		}
 
-		if (invulnerableTimeStamp < Time.time && !isParrying ) {
-			invulnerable = false;
-			if(!freakoutMode){
-				mySpriteRenderer.enabled = true;
-			}
-		}
+		CheckInvulnerableTimeStamp ();
 
 		if (invulnerable && !isParrying && !parryStanceActivated) {
 			Flash ();
 		}
 
-		if (receivedDamage && life > 0) {
-
-			if(startedParryStance || parryStanceActivated){
-				CancelParryStance();
-			}
-
-			ToggleInvinsibility ();
-		}
-
-		if(life <= 0 ){
-			isDying = true;
-			Destroy(gameObject);
-			//animator.SetBool("dying",true);
-		}
+		CheckIfDamageReceived ();
+			
+		CheckDeath ();
 
 	}
 
@@ -275,6 +260,35 @@ public class PussInBoots : Cat {
 		animator.SetBool("idle",true);
 		enemyBeingParried.ReceiveParry();
 		CancelParryStance();
+	}
+
+	protected override void CheckIfDamageReceived()
+	{
+		if (receivedDamage && life > 0) {
+
+			if(startedParryStance || parryStanceActivated){
+				CancelParryStance();
+			}
+
+			ToggleInvinsibility ();
+		}
+	}
+
+	protected override void CheckInvulnerableTimeStamp()
+	{
+		if (invulnerableTimeStamp < Time.time && !isParrying ) {
+			invulnerable = false;
+			if(!freakoutMode){
+				mySpriteRenderer.enabled = true;
+			}
+		}
+	}
+
+	protected override void CheckDeath ()
+	{
+		if(life <= 0 ){
+			SceneManager.LoadScene (1);
+		}
 	}
 
 	IEnumerator StartParryTimer(){

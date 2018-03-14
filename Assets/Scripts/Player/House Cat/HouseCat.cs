@@ -32,13 +32,18 @@ public class HouseCat : Cat {
 				}
 
 				if(Input.GetKeyDown (jumpKey) || Input.GetButtonDown(jumpGamepadButton)){
-
+					animator.SetBool("jumping", true);
 					if(!isFalling){
 
 						if(!isJumping){
 							Jump();
 						} 
 					}
+				}
+
+				if(isFalling)
+				{
+					animator.SetBool("jumping", false);
 				}
 
 				if((Input.GetKeyDown (enterPortalKey) || Input.GetButtonDown(enterPortalGamepadButton)) && isNearPortal ){

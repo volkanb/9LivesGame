@@ -132,26 +132,15 @@ public class MagicCat : Cat {
 			}
 		}
 
-		if (invulnerableTimeStamp < Time.time) {
-			invulnerable = false;
-			if(!freakoutMode){
-				mySpriteRenderer.enabled = true;
-			}
-		}
+		CheckInvulnerableTimeStamp ();
 
 		if (invulnerable) {
 			Flash ();
 		}
 
-		if (receivedDamage && life > 0) {
-			ToggleInvinsibility ();
-		}
+		CheckIfDamageReceived ();
 
-		if(life <= 0 ){
-			isDying = true;
-			Destroy(gameObject);
-			//animator.SetBool("dying",true);
-		}
+		CheckDeath ();
 	}
 
     private void FixedUpdate()

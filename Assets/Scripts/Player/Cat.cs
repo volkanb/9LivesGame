@@ -176,8 +176,7 @@ public class Cat : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other){
 		if(other.gameObject.tag == "DeathPit"){
-			isDying = true;
-			Destroy(gameObject);
+			FellFromStageDeath ();
 		}
 
         // Increases the fill for the freakout bar
@@ -228,6 +227,47 @@ public class Cat : MonoBehaviour {
             myRigidBody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
+
+	protected virtual void CheckIfDamageReceived()
+	{
+		if (receivedDamage && life > 0) {
+			animator.SetBool("damage",true);
+			ToggleInvinsibility ();
+		}
+	}
+
+	protected void DamageAnimationFinished()
+	{
+		animator.SetBool("damage",false);
+	}
+
+	protected virtual void CheckInvulnerableTimeStamp()
+	{
+		if (invulnerableTimeStamp < Time.time) {
+			invulnerable = false;
+			if(!freakoutMode){
+				mySpriteRenderer.enabled = true;
+			}
+		}
+	}
+
+	protected virtual void CheckDeath()
+	{
+		if(life <= 0 ){
+			isDying = true;
+			animator.SetBool("dying",true);
+		}
+	}
+
+	protected void DeathAnimationFinished()
+	{
+		SceneManager.LoadScene (1);
+	}
+
+	protected void FellFromStageDeath()
+	{
+		SceneManager.LoadScene (1);
+	}
 
 }
 
