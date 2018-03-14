@@ -17,14 +17,15 @@ public class GroundChecker : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 
-		if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform"){
+		if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform" || other.gameObject.tag == "Enemy")
+        {
 			player.IsGrounded();
             player.isOnGround = true;
 		}
 	}
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform")
+        if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform" || other.gameObject.tag == "Enemy")
         {
             player.isOnGround = false;
         }

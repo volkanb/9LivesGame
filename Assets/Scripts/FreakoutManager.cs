@@ -35,7 +35,7 @@ public class FreakoutManager : MonoBehaviour {
         }
         else if(m_fillAmount != 1)
         {
-            cat.ready = false;
+            //cat.ready = false; //was being called too many times in the scene as errors after using FreakOut
         }
     }
 
@@ -48,6 +48,7 @@ public class FreakoutManager : MonoBehaviour {
         // Resets the fill amount.
         m_fillAmount = 0;
         UpdateFillAmount();
+        cat.ready = false;
     }
 
     public void IncreaseFBBar()

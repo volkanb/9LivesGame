@@ -33,14 +33,19 @@ public class KnightDog : Enemy {
 		lookingRight = true;
 		isDefending = false;
 		canReceiveDamage = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        freakoutManager = FindObjectOfType<FreakoutManager>();
+    }
+
+ 
+
+    // Update is called once per frame
+    void Update () {
 
 		distanceToPlayer = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
 
-		if(!dying){
+        
+
+        if (!dying){
 
 			if(!stunned && !prepareForParry && !attacking){ 
 
@@ -236,4 +241,16 @@ public class KnightDog : Enemy {
 		canReceiveDamage = false;
 
 	}
+
+ 
+
+    void OnBecameVisible()
+    {
+        freakoutManager.AddEnemie(this.gameObject);
+    }
+
+    void OnBecameInvisible()
+    {
+        freakoutManager.RemoveEnemie(this.gameObject);
+    }
 }

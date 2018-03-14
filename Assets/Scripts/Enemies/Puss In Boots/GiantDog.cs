@@ -33,6 +33,7 @@ public class GiantDog : Enemy
         myAnimator = GetComponent<Animator>();
         lookingRight = true;
         canReceiveDamage = false;
+        freakoutManager = FindObjectOfType<FreakoutManager>();
     }
 
     // Update is called once per frame
@@ -229,5 +230,15 @@ public class GiantDog : Enemy
         myAnimator.SetBool("idle", true);
         canReceiveDamage = false;
 
+    }
+
+    void OnBecameVisible()
+    {
+        freakoutManager.AddEnemie(this.gameObject);
+    }
+
+    void OnBecameInvisible()
+    {
+        freakoutManager.RemoveEnemie(this.gameObject);
     }
 }

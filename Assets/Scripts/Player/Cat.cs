@@ -70,7 +70,7 @@ public class Cat : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        //CheckSlope();
+        CheckSlope();
     }
 
     protected void MoveRight(){
@@ -209,14 +209,14 @@ public class Cat : MonoBehaviour {
         {
             
             RaycastHit2D hit = Physics2D.Raycast(transform.position - new Vector3(0, 0.4f, 0), Vector2.down, 1, mask);
-            Debug.DrawRay(transform.position-new Vector3(0,0.4f,0), Vector2.down, Color.green);
+            Debug.DrawRay(transform.position, Vector2.down, Color.green);
 
             // Check if we are on the slope
             if (hit && Mathf.Abs(hit.normal.x) > Mathf.Epsilon)
             {
-                Debug.Log("raycasted");
+                Debug.Log("On stairs");
                 // We freeze all the rigidbody constraints and put velocity to 0
-                myRigidBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+                //myRigidBody2D.constraints = RigidbodyConstraints2D.FreezeAll;
                 myRigidBody2D.velocity = Vector2.zero;
             }
         }
