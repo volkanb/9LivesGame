@@ -70,8 +70,9 @@ public class Health : MonoBehaviour
 
         if (heal)
         {
+            cat.life++;
             heal = false;
-            if (m_numHealth >= m_maxHealth)
+            if (m_numHealth > m_maxHealth)
             {
                 m_numHealth = m_maxHealth;
             }
