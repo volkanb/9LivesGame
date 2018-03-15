@@ -88,7 +88,7 @@ public class MagicCat : Cat {
                 }
 
 				if(Input.GetKeyDown (jumpKey) || Input.GetButtonDown(jumpGamepadButton)){
-                    animator.SetBool("jump", true);
+                    animator.SetBool("jumping", true);
 					if(!isFalling){
 
                         if (!isJumping)
@@ -108,10 +108,10 @@ public class MagicCat : Cat {
                     levitate = true;
                 }
 
-                if(isFalling)
-                {
-                    animator.SetBool("jump", false);
-                }
+//                if(isFalling)
+//                {
+//                    animator.SetBool("jumping", false);
+//                }
                 
                 if(isOnGround)
                 {

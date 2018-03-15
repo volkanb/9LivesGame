@@ -56,7 +56,8 @@ public class PussInBoots : Cat {
 			myRigidBody2D.velocity = new Vector3(0, 0, 0);
             animator.SetBool("climbing", true);
             animator.SetBool("walking", false);
-            animator.SetBool("idle", false);       
+            animator.SetBool("idle", false);  
+			animator.SetBool("jumping", false);
         }
 	}
 	//Nick
@@ -131,6 +132,7 @@ public class PussInBoots : Cat {
 
 						if(!isJumping){
 							Jump();
+							animator.SetBool("jumping",true);
 						} 
 					}
 				}
@@ -269,7 +271,7 @@ public class PussInBoots : Cat {
 			if(startedParryStance || parryStanceActivated){
 				CancelParryStance();
 			}
-
+			animator.SetBool("damage",true);
 			ToggleInvinsibility ();
 		}
 	}
@@ -284,12 +286,7 @@ public class PussInBoots : Cat {
 		}
 	}
 
-	protected override void CheckDeath ()
-	{
-		if(life <= 0 ){
-			SceneManager.LoadScene (1);
-		}
-	}
+
 
 	IEnumerator StartParryTimer(){
 

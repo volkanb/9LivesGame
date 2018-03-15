@@ -161,7 +161,7 @@ public class Cat : MonoBehaviour {
 			isFalling = false;
 			myRigidBody2D.velocity = new Vector2(myRigidBody2D.velocity.x,0);
 //			animator.SetBool("flying", false);
-//			animator.SetBool("jumping", false);
+			animator.SetBool("jumping", false);
 //			animator.SetBool("falling",false);
 	}
 
