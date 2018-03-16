@@ -52,6 +52,7 @@ public class GiantDog : Enemy
 
                 if (attackingRange < distanceToPlayer && distanceToPlayer <= walkingRange)
                 {
+					
                     myAnimator.SetBool("attacking", false);
                     Walk();
                 }
@@ -229,6 +230,7 @@ public class GiantDog : Enemy
         myAnimator.SetBool("stunned", false);
         myAnimator.SetBool("idle", true);
         canReceiveDamage = false;
+		attacking = false;
 
     }
 

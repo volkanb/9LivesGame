@@ -59,18 +59,30 @@ public class Health : MonoBehaviour
             damage = false;
             if (m_numHealth <= 0)
             {
-                m_heart[0].GetComponent<Image>().sprite = m_EmptyHeart;
+				m_numHealth = 0;
+				for(int i = m_maxHealth - 1; i > m_numHealth - 1; i--)
+				{
+					m_heart[i].GetComponent<Image>().sprite = m_EmptyHeart;
+				}
                 // GAME OVER.
             }
             else
             {
-                m_heart[m_numHealth].GetComponent<Image>().sprite = m_EmptyHeart;
+				for(int i = m_maxHealth - 1; i > m_numHealth - 1; i--)
+				{
+					m_heart[i].GetComponent<Image>().sprite = m_EmptyHeart;
+				}
+                //m_heart[m_numHealth].GetComponent<Image>().sprite = m_EmptyHeart;
             }
         }
 
         if (heal)
         {
             cat.life++;
+			if (cat.life > m_maxHealth) 
+			{
+				cat.life = m_maxHealth;
+			}
             heal = false;
             if (m_numHealth > m_maxHealth)
             {
