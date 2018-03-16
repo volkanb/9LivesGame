@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class FinishLevelTrigger : MonoBehaviour {
 
@@ -8,9 +9,10 @@ public class FinishLevelTrigger : MonoBehaviour {
 	private ScreenFade screenFade;
 
 	public GameObject finishLevelText;
+    public int destinationSceneIndex;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		player = FindObjectOfType<Cat>();
 		mainCamera = FindObjectOfType<CameraController>();
 		screenFade = FindObjectOfType<ScreenFade>();
@@ -37,6 +39,14 @@ public class FinishLevelTrigger : MonoBehaviour {
 
 		yield return new WaitForSeconds(1.2f);
 		finishLevelText.SetActive(true);
-	}
+        StartCoroutine(ReturnToHUB());
+
+    }
+
+    IEnumerator ReturnToHUB()
+    {
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene(destinationSceneIndex);
+    }
 
 }

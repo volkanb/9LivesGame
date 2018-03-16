@@ -4,6 +4,8 @@ using System.Collections;
 public class RapierDamageCollider : MonoBehaviour {
 
     public int cuts = 0;
+    public int flashes = 10;
+    bool isflashing = true;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -32,10 +34,10 @@ public class RapierDamageCollider : MonoBehaviour {
 
         if (other.gameObject.tag == "Anchor")
         {
+                 
 
-            int chandeliersCut = FindObjectOfType<ChandelierFall>().anchorsCut;
 
-            chandeliersCut++;
+            //chandeliersCut++;
             //cuts += 1;
             Destroy(other.gameObject);
         }

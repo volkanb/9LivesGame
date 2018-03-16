@@ -9,6 +9,8 @@ public class ChandelierFall : MonoBehaviour {
     public GameObject chandelier;
     public GameObject anchor1;
     public GameObject anchor2;
+    public GameObject finalDoor;
+    public GameObject fallenChandelier;
 
     private Rigidbody2D rb;
 
@@ -30,6 +32,11 @@ public class ChandelierFall : MonoBehaviour {
         {
             rb.constraints = RigidbodyConstraints2D.None;
             anchorsCut++;
+
+            finalDoor.SetActive(true);
+            fallenChandelier.SetActive(true);
+            Destroy(this.gameObject);
+
         }
 	}
 }
