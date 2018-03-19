@@ -55,7 +55,7 @@ public class MagicCat : Cat {
 			ReturnToHub();
 		}
 
-		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isAttacking && !isJumping && !isPulsing && ready){
+		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isWalking && !isAttacking && !isJumping && !isPulsing && ready){
 			freakoutMode = true;
 			animator.SetBool("freakout",true);
 		}

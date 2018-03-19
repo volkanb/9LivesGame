@@ -279,8 +279,8 @@ public class PussInBoots : Cat {
 	protected override void CheckInvulnerableTimeStamp()
 	{
 		if (invulnerableTimeStamp < Time.time && !isParrying ) {
-			invulnerable = false;
 			if(!freakoutMode){
+				invulnerable = false;
 				mySpriteRenderer.enabled = true;
 			}
 		}

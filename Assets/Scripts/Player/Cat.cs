@@ -252,8 +252,8 @@ public class Cat : MonoBehaviour {
 	protected virtual void CheckInvulnerableTimeStamp()
 	{
 		if (invulnerableTimeStamp < Time.time) {
-			invulnerable = false;
 			if(!freakoutMode){
+				invulnerable = false;
 				mySpriteRenderer.enabled = true;
 			}
 		}
