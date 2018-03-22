@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MagicCat : Cat {
@@ -19,7 +19,9 @@ public class MagicCat : Cat {
 	public KeyCode magicPulseKey;
 	public KeyCode returnToHubKey;
 
+	public bool canLevitate;
     public int levitateDelay = 3;
+	public float levitateCooldown = 3;
     public bool levitate = false;
     public float doubleJump = 0;
 
@@ -27,9 +29,11 @@ public class MagicCat : Cat {
 
 	public bool isPulsing;
 
+	private float levitateCooldownTimeStamp = 0;
+	private Coroutine levitateCoroutine;
 	// Use this for initialization
 	void Start () {
-
+		canLevitate = true;
 		animator = GetComponent<Animator>();
 		mySpriteRenderer = GetComponent<SpriteRenderer>();
 		myRigidBody2D = GetComponent<Rigidbody2D>();
@@ -55,7 +59,7 @@ public class MagicCat : Cat {
 			ReturnToHub();
 		}
 
-		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isWalking && !isAttacking && !isJumping && !isPulsing && ready){
+		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isAttacking && !isJumping && !isPulsing && ready){
 			freakoutMode = true;
 			animator.SetBool("freakout",true);
 		}
@@ -77,15 +81,19 @@ public class MagicCat : Cat {
                     Idle();
                 }
 
-                if (Input.GetKey(jumpKey) && levitate || Input.GetAxis(moveVerticalGamepadAxis) >= 0.5f && levitate)
-                {
-                    MoveUp();
-                }
+				if ((Input.GetKeyDown (downKey) && levitate) || Input.GetAxis (moveVerticalGamepadAxis) <= -0.5f && levitate) {
+					CancelLevitate ();
+				}
 
-                if (Input.GetKey(downKey) && levitate || Input.GetAxis(moveVerticalGamepadAxis) <= -0.5f && levitate)
-                {
-                    MoveDown();
-                }
+//                if (Input.GetKey(jumpKey) && levitate || Input.GetAxis(moveVerticalGamepadAxis) >= 0.5f && levitate)
+//                {
+//                    MoveUp();
+//                }
+//
+//                if (Input.GetKey(downKey) && levitate || Input.GetAxis(moveVerticalGamepadAxis) <= -0.5f && levitate)
+//                {
+//                    MoveDown();
+//                }
 
 				if(Input.GetKeyDown (jumpKey) || Input.GetButtonDown(jumpGamepadButton)){
                     animator.SetBool("jumping", true);
@@ -103,9 +111,9 @@ public class MagicCat : Cat {
 					}
 				}
 
-                if (!isOnGround && doubleJump > 0 && isJumping && Input.GetKeyDown(jumpKey) || !isOnGround && doubleJump > 0 && isJumping && Input.GetButtonDown(jumpGamepadButton))
+				if ((!isOnGround && doubleJump > 0 && isJumping && Input.GetKeyDown(jumpKey) && canLevitate) || (!isOnGround && doubleJump > 0 && isJumping && Input.GetButtonDown(jumpGamepadButton) && canLevitate))
                 {
-                    levitate = true;
+					Levitate ();
                 }
 
 //                if(isFalling)
@@ -134,6 +142,10 @@ public class MagicCat : Cat {
 
 		CheckInvulnerableTimeStamp ();
 
+		if (levitateCooldownTimeStamp < Time.time) {
+			canLevitate = true;
+		}
+
 		if (invulnerable) {
 			Flash ();
 		}
@@ -143,25 +155,46 @@ public class MagicCat : Cat {
 		CheckDeath ();
 	}
 
-    private void FixedUpdate()
-    {
-        if (levitate)
-        {
-            animator.SetBool("levitate", true);
-            myRigidBody2D.bodyType = RigidbodyType2D.Kinematic;
-            myRigidBody2D.velocity = Vector2.zero;
-            StartCoroutine(LevitateOff());
-        }
-    }
+//    private void FixedUpdate()
+//    {
+//        if (levitate)
+//        {
+//            animator.SetBool("levitate", true);
+//			myRigidBody2D.gravityScale = 0;
+//            myRigidBody2D.velocity = Vector2.zero;
+//            StartCoroutine(LevitateOff());
+//        }
+//    }
 
+	void Levitate(){
+		
+		levitate = true;
+		animator.SetBool("levitate", true);
+		myRigidBody2D.gravityScale = 0;
+		myRigidBody2D.velocity = Vector2.zero;
+		levitateCoroutine = StartCoroutine(LevitateOff());
+	}
     
+	void CancelLevitate(){
+		StopCoroutine (levitateCoroutine);
+		canLevitate = false;
+		levitateCooldownTimeStamp = Time.time + levitateCooldown;
+		levitate = false;
+		animator.SetBool("levitate", false);
+		myRigidBody2D.gravityScale = 1;
+	}
 
     IEnumerator LevitateOff()
     {
+		
         yield return new WaitForSeconds(levitateDelay);
-        levitate = false;
-        animator.SetBool("levitate", false);
-        myRigidBody2D.bodyType = RigidbodyType2D.Dynamic;
+		print ("Leviate off called");
+		canLevitate = false;
+		levitateCooldownTimeStamp = Time.time + levitateCooldown;
+		levitate = false;
+		animator.SetBool("levitate", false);
+		myRigidBody2D.gravityScale = 1;
+       
     }
 
 
