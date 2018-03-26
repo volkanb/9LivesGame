@@ -29,6 +29,9 @@ public class Enemy : MonoBehaviour {
 
 	public bool canReceiveDamage;
 
+	public GameObject[] droppedItems;
+	public float[] itemDropRate;
+
 	protected FreakoutManager freakoutManager;
 
 	// Use this for initialization
@@ -76,6 +79,19 @@ public class Enemy : MonoBehaviour {
 	}
 
 	virtual public void Disappear(){
+		DropItem ();
 		Destroy (gameObject);
+	}
+
+	public void DropItem()  //Dropping items from enemies
+	{
+		for (int i = 0; i < droppedItems.Length; i++) {
+			if (Random.value < itemDropRate [i]) {
+				GameObject droppedItem = Instantiate (droppedItems [i], transform.position, Quaternion.identity);
+
+				droppedItem.GetComponent<Item> ().MoveItem();
+			}
+		}
+
 	}
 }

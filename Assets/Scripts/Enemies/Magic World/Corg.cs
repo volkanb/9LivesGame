@@ -161,9 +161,4 @@ public class Corg : Enemy {
 
 		}
 	}
-
-	protected void DeathAnimationFinished()
-	{
-		Destroy(transform.parent.gameObject);
-	}
 }

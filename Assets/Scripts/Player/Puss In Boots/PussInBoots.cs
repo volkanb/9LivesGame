@@ -79,7 +79,7 @@ public class PussInBoots : Cat {
 			ReturnToHub();
 		}
 
-		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isWalking && !isJumping && !isAttacking && !isParrying && !startedParryStance && !parryStanceActivated && ready){
+		if((Input.GetButtonDown(freakoutGamepadButton) || Input.GetKeyDown(freakoutKey) ) && !isDying && !isJumping && !isAttacking && !isParrying && !startedParryStance && !parryStanceActivated && ready){
 			freakoutMode = true;
 			animator.SetBool("freakout",true);
 		}
@@ -132,7 +132,6 @@ public class PussInBoots : Cat {
 
 						if(!isJumping){
 							Jump();
-							animator.SetBool("jumping",true);
 						} 
 					}
 				}
