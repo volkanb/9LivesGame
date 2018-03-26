@@ -68,13 +68,17 @@ public class FreakoutManager : MonoBehaviour {
 		this.cat.invulnerable = false;
 		this.cat.StopFreakout();
 		this.cat.GetComponent<SpriteRenderer>().enabled = true;
-		this.cat = null;
 	}
 
 	public void KillAll(){
 
 		foreach(GameObject enemie in enemiesOnScreen){
-			Destroy(enemie);
+			if(enemie.GetComponentInChildren<Enemy>() != null){
+				enemie.GetComponentInChildren<Enemy> ().life = 0;
+			} else{
+				enemie.GetComponent<Enemy> ().life = 0;
+			}
+
 		}
 		enemiesOnScreen.Clear();
 	}

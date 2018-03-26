@@ -30,6 +30,7 @@ public class Cat : MonoBehaviour {
 	public bool receivedDamage;
 	public bool invulnerable;
     public bool freakoutMode;
+	public bool FourLeggedCat;
 
 
 	public KeyCode moveRightKey;
@@ -50,6 +51,8 @@ public class Cat : MonoBehaviour {
 	protected bool isWalking;
 	public bool isFalling;
 	protected bool isAttacking;
+
+//	public LayerMask groundLayer;
     public bool isOnGround;
 
 	public bool finishedLevel;
@@ -62,6 +65,8 @@ public class Cat : MonoBehaviour {
     public bool ready;                                          // Checks if the freak out bar is ready.
 
     private LayerMask mask = 1<<8;
+
+	public int currencyAmount = 0;
 
     // Use this for initialization
     void Start () {
@@ -116,8 +121,7 @@ public class Cat : MonoBehaviour {
 
 	protected void Jump(){
 
-//		animator.SetBool("jumping",true);
-
+		animator.SetBool("jumping",true);
 		myRigidBody2D.velocity = new Vector3(myRigidBody2D.velocity.x,0,0);
 		myRigidBody2D.AddForce(new Vector3(0, jumpForce,0), ForceMode2D.Impulse);
 		isJumping = true;
@@ -157,6 +161,7 @@ public class Cat : MonoBehaviour {
 
 	public void IsGrounded(){
 
+
 			isJumping = false;
 			isFalling = false;
 			myRigidBody2D.velocity = new Vector2(myRigidBody2D.velocity.x,0);
@@ -194,6 +199,10 @@ public class Cat : MonoBehaviour {
             Health health = gameObject.GetComponent<Health>();
             health.heal = true;
         }
+
+		if(other.gameObject.tag == "Ground" || other.gameObject.tag == "InvisiblePlatform" || other.gameObject.tag == "Enemy"){
+			CheckIfGrounded();
+		}
     }
 
 	protected void ReturnToHub(){
@@ -208,6 +217,26 @@ public class Cat : MonoBehaviour {
 		animator.SetBool("freakout",false);
 	}
 
+	//Raycast to see if Cat is on Ground
+	protected void CheckIfGrounded(){
+
+		Vector3 position = transform.position;
+		Vector2 direction = Vector2.down;
+		float distance = 0.5f;
+		if (!FourLeggedCat) {
+			distance = 1f;
+		}
+
+		RaycastHit2D hit = Physics2D.Raycast(position,direction,distance,LayerMask.GetMask("Enemies","Ground"));
+		Debug.DrawRay(position, direction, Color.green);
+
+		if(hit.collider != null){
+			IsGrounded();
+		}
+
+
+	}
+
     //WIP
     void CheckSlope()
     {
@@ -216,7 +245,7 @@ public class Cat : MonoBehaviour {
         {
             
             RaycastHit2D hit = Physics2D.Raycast(transform.position - new Vector3(0, 0.4f, 0), Vector2.down, 1, mask);
-            Debug.DrawRay(transform.position, Vector2.down, Color.green);
+            //Debug.DrawRay(transform.position, Vector2.down, Color.green);
 
             // Check if we are on the slope
             if (hit && Mathf.Abs(hit.normal.x) > Mathf.Epsilon)

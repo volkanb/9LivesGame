@@ -96,35 +96,33 @@ public class MagicCat : Cat {
 //                }
 
 				if(Input.GetKeyDown (jumpKey) || Input.GetButtonDown(jumpGamepadButton)){
-                    animator.SetBool("jumping", true);
 					if(!isFalling){
 
-                        if (!isJumping)
-                        {
+						if (!isJumping) {
                             
-                            Jump();
-                        }
-                        if(isJumping)
-                        {
-                            doubleJump++;
-                        }
+							Jump ();
+						} else {
+							if (!levitate && canLevitate) {
+								Levitate ();
+							}
+						}
 					}
 				}
 
-				if ((!isOnGround && doubleJump > 0 && isJumping && Input.GetKeyDown(jumpKey) && canLevitate) || (!isOnGround && doubleJump > 0 && isJumping && Input.GetButtonDown(jumpGamepadButton) && canLevitate))
-                {
-					Levitate ();
-                }
-
-//                if(isFalling)
+//				if ((!isOnGround && doubleJump > 0 && isJumping && Input.GetKeyDown(jumpKey) && canLevitate) || (!isOnGround && doubleJump > 0 && isJumping && Input.GetButtonDown(jumpGamepadButton) && canLevitate))
 //                {
-//                    animator.SetBool("jumping", false);
+//					Levitate ();
 //                }
-                
-                if(isOnGround)
-                {
-                    doubleJump = 0;
-                }
+//
+////                if(isFalling)
+////                {
+////                    animator.SetBool("jumping", false);
+////                }
+//                
+//                if(isOnGround)
+//                {
+//                    doubleJump = 0;
+//                }
 
                 if (Input.GetKeyDown (shootKey) || Input.GetButtonDown(shootMagicGamepadButton)){
 					StartProjectile();
