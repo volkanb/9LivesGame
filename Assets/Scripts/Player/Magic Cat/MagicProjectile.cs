@@ -12,6 +12,8 @@ public class MagicProjectile : MonoBehaviour {
 	public bool goRight;
 	private float timeStampToDestroy;
 
+	public GameObject magicShotParticlePrefab;
+
 	// Use this for initialization
 	void Start () {
 
@@ -45,7 +47,11 @@ public class MagicProjectile : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
-
+		if (goRight) {
+			Instantiate (magicShotParticlePrefab, transform.position, Quaternion.Euler(new Vector3(0,-90,0)));
+		} else {
+			Instantiate (magicShotParticlePrefab, transform.position, Quaternion.Euler(new Vector3(0,90,0)));
+		}
         if (other.tag == "Scenario" || other.tag == "Ground") {
             Destroy(gameObject);
         } else if (other.tag == "Enemy") {
