@@ -9,6 +9,7 @@ public class InvisibleTextTrigger : MonoBehaviour {
 
 	public bool isRevealed;
 
+	private Animator myAnimator;
 	public Text myText;
 
 	private float revealedTimestamp;
@@ -17,6 +18,7 @@ public class InvisibleTextTrigger : MonoBehaviour {
 		myText.enabled = false;
 		isRevealed = false;
 		revealedTimestamp = 0;
+		myAnimator = myText.gameObject.GetComponent<Animator>();
 	}
 
 
@@ -25,13 +27,18 @@ public class InvisibleTextTrigger : MonoBehaviour {
 
 		if(isRevealed && revealedTimestamp == 0){
 			revealedTimestamp = Time.time + timeToStayRevealed;
+			if(myAnimator){
+				myAnimator.SetBool("fadeIn",true);
+			}
 		}
 
 		if(Time.time > revealedTimestamp ){
 			isRevealed = false;
-			myText.enabled = false;
 			revealedTimestamp = 0;
+			myAnimator.SetBool("fadeIn",false);
 		}
 
 	}
+
+
 }

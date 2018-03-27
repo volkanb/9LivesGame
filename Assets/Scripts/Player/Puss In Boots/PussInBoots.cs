@@ -29,6 +29,9 @@ public class PussInBoots : Cat {
 
 	public Enemy enemyBeingParried;
 
+	public AudioClip swordParry;
+	public AudioClip swordHit;
+
 	void Awake(){
 		rightAttackingPoint.enabled = false;
 		leftAttackingPoint.enabled = false;
@@ -37,11 +40,9 @@ public class PussInBoots : Cat {
 	}
 
 	// Use this for initialization
-	void Start () {
-		animator = GetComponent<Animator>();
-		mySpriteRenderer = GetComponent<SpriteRenderer>();
-		myRigidBody2D = GetComponent<Rigidbody2D>();
-		myRigidBody2D.velocity = new Vector2(myRigidBody2D.velocity.x,0);
+	protected override void Start ()
+	{
+		base.Start ();
 	}
 
 	//Nick
@@ -246,6 +247,8 @@ public class PussInBoots : Cat {
 
 		animator.SetBool("parryStance",false);
 		animator.SetBool("parrySuccess",true);
+
+		myAudioSource.PlayOneShot (swordParry);
 	}
 
 	public void RefreshTimeScale(){

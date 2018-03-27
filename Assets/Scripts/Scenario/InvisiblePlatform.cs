@@ -8,6 +8,7 @@ public class InvisiblePlatform : MonoBehaviour {
 	public bool isRevealed;
 
 	private SpriteRenderer mySpriteRenderer;
+	private Animator myAnimator;
 	private float revealedTimestamp;
 
 	void Awake(){
@@ -15,6 +16,7 @@ public class InvisiblePlatform : MonoBehaviour {
 		mySpriteRenderer.enabled = false;
 		isRevealed = false;
 		revealedTimestamp = 0;
+		myAnimator = GetComponent<Animator>();
 	}
 
 
@@ -23,13 +25,17 @@ public class InvisiblePlatform : MonoBehaviour {
 
 		if(isRevealed && revealedTimestamp == 0){
 			revealedTimestamp = Time.time + timeToStayRevealed;
+			if(myAnimator){
+				myAnimator.SetBool("fadeIn",true);
+			}
 		}
 
 		if(Time.time > revealedTimestamp ){
 			isRevealed = false;
-			mySpriteRenderer.enabled = false;
+			myAnimator.SetBool("fadeIn",false);
 			revealedTimestamp = 0;
 		}
 
 	}
+
 }

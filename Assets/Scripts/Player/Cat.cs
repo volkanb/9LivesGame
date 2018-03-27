@@ -23,6 +23,7 @@ public class Cat : MonoBehaviour {
 	protected Animator animator;
 	protected Rigidbody2D myRigidBody2D;
 	protected SpriteRenderer mySpriteRenderer;
+	protected AudioSource myAudioSource;
 
 	//States
 	public bool isLookingRight;
@@ -69,8 +70,12 @@ public class Cat : MonoBehaviour {
 	public int currencyAmount = 0;
 
     // Use this for initialization
-    void Start () {
-	
+    protected virtual void Start () {
+		animator = GetComponent<Animator>();
+		mySpriteRenderer = GetComponent<SpriteRenderer>();
+		myRigidBody2D = GetComponent<Rigidbody2D>();
+		myRigidBody2D.velocity = new Vector2(myRigidBody2D.velocity.x,0);
+		myAudioSource = GetComponent<AudioSource> ();
 	}
 
     private void FixedUpdate()

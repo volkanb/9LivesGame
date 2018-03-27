@@ -32,13 +32,13 @@ public class MagicCat : Cat {
 	private float levitateCooldownTimeStamp = 0;
 	private Coroutine levitateCoroutine;
 	// Use this for initialization
-	void Start () {
+	protected override void Start ()
+	{
+		base.Start ();
 		canLevitate = true;
-		animator = GetComponent<Animator>();
-		mySpriteRenderer = GetComponent<SpriteRenderer>();
-		myRigidBody2D = GetComponent<Rigidbody2D>();
-		myRigidBody2D.velocity = new Vector2(myRigidBody2D.velocity.x,0);
 	}
+
+
 	
 	// Update is called once per frame
 	void Update () {
