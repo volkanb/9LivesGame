@@ -9,7 +9,7 @@ public class MagicProjectile : MonoBehaviour {
 	float timeToDestroy;
 
 	private Cat player;
-	private bool goRight;
+	public bool goRight;
 	private float timeStampToDestroy;
 
 	// Use this for initialization
@@ -33,9 +33,11 @@ public class MagicProjectile : MonoBehaviour {
 
 		if(goRight){
 			GetComponent<Rigidbody2D>().transform.position += Vector3.right * speed * Time.deltaTime;
-		} else {
+            GetComponent<SpriteRenderer>().flipX = false;
+        } else {
 			GetComponent<Rigidbody2D>().transform.position += Vector3.left * speed * Time.deltaTime;
-		}
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
 
 		if(Time.time > timeStampToDestroy){
 			Destroy(gameObject);
@@ -44,20 +46,24 @@ public class MagicProjectile : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 
-		if (other.tag == "Scenario" || other.tag == "Ground") {
-			Destroy (gameObject);
-		} else if (other.tag == "Enemy") {
-			Enemy enemyVariables = other.GetComponent<Enemy> ();
+        if (other.tag == "Scenario" || other.tag == "Ground") {
+            Destroy(gameObject);
+        } else if (other.tag == "Enemy") {
+            Enemy enemyVariables = other.GetComponent<Enemy>();
 
-			if(!enemyVariables.invulnerable){
-				enemyVariables.life -= 1;
-				enemyVariables.receivedDamage = true;
-			}
+            if (!enemyVariables.invulnerable) {
+                enemyVariables.life -= 1;
+                enemyVariables.receivedDamage = true;
+            }
 
-			Destroy (gameObject);
-		} else {
-			Destroy(gameObject);
-		}
+            Destroy(gameObject);
+        } else if(other.tag == "DeflectShield") 
+        {
+            goRight = !goRight;
+        }
+        else {
+            Destroy(gameObject);
+        }
 
 	}
 }
