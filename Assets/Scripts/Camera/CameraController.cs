@@ -85,7 +85,7 @@ public class CameraController : MonoBehaviour {
 		}
 
         //If the player as Sebastian is climbing, set the target vector 
-        if (player.isJumping && sebby.isJumping && player.name == "Puss In Boots")
+        if (player.isJumping && /*sebby.isJumping &&*/ player.name == "Puss In Boots")
         {
             if (player.transform.position.y - (moveTo.y - yOffset) > yTolerance)
                 moveTo = new Vector3(moveTo.x, player.transform.position.y + yOffset, moveTo.z);

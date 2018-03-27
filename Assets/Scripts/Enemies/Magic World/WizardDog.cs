@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class WizardDog : Enemy {
 
+    public Transform rightFiringPoint;
+    public Transform leftFiringPoint;
+    public GameObject projectile;
+    public GameObject shield;
+
     public float walkingRange;
     public float minimumRange;
     public float attackingRange;
 
-    private bool lookingRight;
+    public bool lookingRight;
 
     private bool isWalking;
+    private bool doneOnce = false;
 
     public float distanceToPlayer;
 
@@ -43,13 +49,26 @@ public class WizardDog : Enemy {
                 if (minimumRange < distanceToPlayer && distanceToPlayer <= walkingRange && !attacking)
                 {
                     myAnimator.SetBool("attacking", false);
-
+                    doneOnce = false;
                     Walk();
                 }
                 else if (distanceToPlayer <= attackingRange && !attacking && !isWalking)
                 {
-                    //StartAttacking();
+                   
+                    if (Random.value > 0.7 && !attacking)
+                    {
+                        CreateShield();
+                    }
+                    else
+                    {
+                        StartAttacking();
+                    }
                 }
+                /*else if (distanceToPlayer >= attackingRange)
+                {
+                    Debug.Log("This");
+                    FinishAttacking();
+                }*/
                 else
                 {
                     Idle();
@@ -138,21 +157,58 @@ public class WizardDog : Enemy {
 
         myAnimator.SetBool("attacking", false);
         myAnimator.SetBool("walking", false);
-
     }
 
 
     void StartAttacking()
     {
-
         attacking = true;
-        myAnimator.SetBool("attacking", true);
-
+        //myAnimator.SetBool("attacking", true);
         myAnimator.SetBool("walking", false);
+        myAnimator.SetBool("idle", false);
 
+
+        if (doneOnce == false)
+        {
+            FireProjectile();// this will function differently when there is an animation to tie it to.
+            doneOnce = true;
+        }
+        Debug.Log("Happening");
+        attacking = false;
+        Walk();
+    }
+
+    public void FireProjectile()
+    {
+        // this will function differently when there is an animation to tie it to.
+        if (lookingRight)
+        {
+            Instantiate(projectile, rightFiringPoint.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(projectile, leftFiringPoint.position, Quaternion.identity);
+        }
+        
     }
 
 
+    void FinishAttacking()
+    {
+
+        attacking = false;
+
+        doneOnce = false;
+        //myAnimator.SetBool("attacking", false);
+        Walk();
+    }
+
+
+    void CreateShield()
+    {
+       GameObject newShield = Instantiate(shield, transform.position, Quaternion.identity);
+       newShield.transform.SetParent(this.gameObject.GetComponent<Transform>());
+    }
 
     void OnBecameVisible()
     {
