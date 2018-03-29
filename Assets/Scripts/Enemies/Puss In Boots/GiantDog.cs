@@ -13,8 +13,6 @@ public class GiantDog : Enemy
 
     public float stunTime;
 
-    private bool lookingRight;
-
     private float stunnedTimestamp;
 
     private bool isWalking;
@@ -80,7 +78,6 @@ public class GiantDog : Enemy
 
             //			source.PlayOneShot (dieSound, 1.0f);
             myAnimator.SetBool("dead", true);
-
             myAnimator.SetBool("idle", false);
             myAnimator.SetBool("attacking", false);
             myAnimator.SetBool("walking", false);
@@ -155,7 +152,6 @@ public class GiantDog : Enemy
     void Idle()
     {
         myAnimator.SetBool("idle", true);
-
         myAnimator.SetBool("attacking", false);
         myAnimator.SetBool("walking", false);
         attacking = false;
@@ -204,22 +200,23 @@ public class GiantDog : Enemy
         stunned = true;
         myAnimator.SetBool("parried", true);
 
+		rightAttackCollider.enabled = false;
+		leftAttackCollider.enabled = false;
+
     }
 
     public override void ReceiveParry()
     {
         base.ReceiveParry();
         stunnedTimestamp = Time.time + stunTime;
+		myAnimator.SetBool("stunned", true);
         myAnimator.SetBool("parried", false);
-        myAnimator.SetBool("stunned", true);
+
 
         myAnimator.SetBool("idle", false);
         myAnimator.SetBool("attacking", false);
         myAnimator.SetBool("walking", false);
 
-
-        rightAttackCollider.enabled = false;
-        leftAttackCollider.enabled = false;
         canReceiveDamage = true;
 
     }
