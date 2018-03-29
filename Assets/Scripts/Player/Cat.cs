@@ -72,7 +72,7 @@ public class Cat : MonoBehaviour {
 
     // Use this for initialization
     protected virtual void Start () {
-    	canWalk = true;
+    	//canWalk = true;
 		animator = GetComponent<Animator>();
 		mySpriteRenderer = GetComponent<SpriteRenderer>();
 		myRigidBody2D = GetComponent<Rigidbody2D>();
@@ -212,17 +212,17 @@ public class Cat : MonoBehaviour {
 
 		if(other.gameObject.tag == "Enemy"){
 			CheckIfGrounded();
-			canWalk = false;
+			//canWalk = false;
 		}
     }
 
-    void OnCollisionExit2D(Collision2D other){
-
-		if(other.gameObject.tag == "Enemy"){
-			CheckIfGrounded();
-			canWalk = true;
-		}
-    }
+//    void OnCollisionExit2D(Collision2D other){
+//
+//		if(other.gameObject.tag == "Enemy"){
+//			CheckIfGrounded();
+//			//canWalk = true;
+//		}
+//    }
 
 	protected void ReturnToHub(){
 		SceneManager.LoadScene(0);
