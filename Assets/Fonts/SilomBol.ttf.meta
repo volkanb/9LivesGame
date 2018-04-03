@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 2fffefeb141cf6f48b3dda8b6133a777
+timeCreated: 1522363793
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Silom
+  fontNames:
+  - Silom
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
