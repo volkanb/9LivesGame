@@ -29,7 +29,7 @@ public class DialogScript : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         StartDialogPauseGame();
-        DialogText("My name is Feona!", "Feona");
+        DialogText("My name is Fiona!", "Fiona");
     }
 
     public void StartDialogPauseGame()
@@ -59,7 +59,7 @@ public class DialogScript : MonoBehaviour
         {
             character = spriteTest[1];
         }
-        else if (characterName == "Feona")
+        else if (characterName == "Fiona")
         {
             character = spriteTest[0];
         }
